@@ -55,6 +55,23 @@ export LANG='en_US.UTF-8'
 export LANGUAGE='en_US.UTF-8'
 export LC_CTYPE='en_US.utf8'
 
+###########- END COLOR CODE -##########
+tram=$( free -h | awk 'NR==2 {print $2}' )
+uram=$( free -h | awk 'NR==2 {print $3}' )
+ISP=$(curl -s ipinfo.io/org | cut -d " " -f 2-10 )
+CITY=$(curl -s ipinfo.io/city )
+# Getting CPU Information
+cpu_usage1="$(ps aux | awk 'BEGIN {sum=0} {sum+=$3}; END {print sum}')"
+cpu_usage="$((${cpu_usage1/\.*} / ${corediilik:-1}))"
+cpu_usage+=" %"
+# TOTAL RAM
+total_ram=` grep "MemTotal: " /proc/meminfo | awk '{ print $2}'`
+totalram=$(($total_ram/1024))
+
+persenmemori="$(echo "scale=2; $usmem*100/$tomem" | bc)"
+#persencpu=
+persencpu="$(echo "scale=2; $cpu1+$cpu2" | bc)"
+
 # // Export Color & Information
 export RED='\033[0;31m'
 export GREEN='\033[0;32m'
@@ -163,6 +180,9 @@ echo -e "${CYAN}  • Current Domain${NC}    =${YELLOW} $( cat /etc/xray/domain 
 echo -e "${CYAN}  • Server IP${NC}         =${YELLOW} ${ipsaya} ${NC}"
 echo -e "${CYAN}  • ISP-VPS${NC}           =${YELLOW} ${ISP} ${NC}"
 echo -e "${CYAN}  • City${NC}              =${YELLOW} ${CITY} ${NC}"
+echo -e "${CYAN}  • RAM${NC}               =${YELLOW} ${totalram}MB ${NC}"
+echo -e "${CYAN}  • RESOURCE${NC}          =${YELLOW} $uram / $tram ${NC}"
+echo -e "${CYAN}  • CPU USAGE${NC}         =${YELLOW} $cpu_usage ${NC}"
 echo -e "${CYAN}  • Clients Name${NC}      =${LIGHT} $Name ${NC}"
 echo -e "${CYAN}  • Script Exfire${NC}     =${RED} $dayleft Days ${NC}"
 echo -e "${GREEN}┌─────────────────────────────────────────────────────┐${NC}"
