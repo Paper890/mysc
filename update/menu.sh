@@ -157,42 +157,37 @@ fi
 }
 clear
 clear
-echo -e "$COLOR1┌────────────────────────────────────────────────────────────┐${NC}"
-echo -e "                      << INFORMASI VPS >>                    \E[0m" | lolcat
-echo -e "$COLOR1└────────────────────────────────────────────────────────────┘${NC}"
-echo -e "  ${BLUE}• ${GREEN}Sever Uptime        ${NC}= $( uptime -p  | cut -d " " -f 2-10000 ) "
-echo -e "  ${BLUE}• ${GREEN}Current Time        ${NC}= $( date -d "0 days" +"%d-%m-%Y | %X" )"
-echo -e "  ${BLUE}• ${GREEN}Operating System    ${NC}= $( cat /etc/os-release | grep -w PRETTY_NAME | sed 's/PRETTY_NAME//g' | sed 's/=//g' | sed 's/"//g')( $(uname -m))"
-echo -e "  ${BLUE}• ${GREEN}Current Domain      ${NC}= $( cat /etc/xray/domain )"
-echo -e "  ${BLUE}• ${GREEN}Server IP           ${NC}= ${ipsaya}"
-echo -e "  ${BLUE}• ${GREEN}ISP-VPS             ${NC}= ${ISP}"
-echo -e "  ${BLUE}• ${GREEN}City                ${NC}= ${CITY}"
-echo -e "  ${BLUE}• ${GREEN}Clients Name        ${NC}= ${YELLOW}$Name ${NC}"
-echo -e "  ${BLUE}• ${GREEN}Script Exfire       ${NC}= ${YELLOW}$Exp (${NC}${RED} $dayleft Days ${NC}${YELLOW})${NC}"
-echo -e "  ${BLUE}• ${GREEN}Developer           ${NC}= RstoreVPN Tunneling ${NC}"
-echo -e "$COLOR1┌────────────────────────────────────────────────────────────┐${NC}"
-echo -e "                     << STATUS SERVICE >>                    \E[0m" | lolcat
-echo -e "$COLOR1┌────────────────────────────────────────────────────────────┐${NC}"
-echo -e "      ${COLOR2}[ SSH Websocket${NC}: ${GREEN}ON ${NC}]  [ NGINX${NC}: ${status_nginx} ] [ XRAY${NC} : ${status_xray} ] "
-echo -e "$COLOR1└────────────────────────────────────────────────────────────┘${NC}"
-echo -e "$COLOR1┌────────────────────────────────────────────────────────────┐${NC}"
-echo -e "$COLOR1│  \033[0m ${BOLD}${YELLOW}SSH     VMESS       VLESS      TROJAN       SHADOWSOCKS$NC  $COLOR1│"
-echo -e "$COLOR1│  \033[0m ${Blue} $ssh1        $vma           $vla          $tra               $ssa   $NC    $COLOR1│"
-echo -e "$COLOR1└────────────────────────────────────────────────────────────┘${NC}"
-echo -e "$COLOR1┌────────────────────────────────────────────────────────────┐${NC}"
-echo -e "                     << MENU TUNNELING >>                    \E[0m" | lolcat
-echo -e "$COLOR1└────────────────────────────────────────────────────────────┘${NC}"
-echo -e "  ${CYAN}[01]${NC} • ${RED}[${NC}${PURPLE} SSH MENU ${NC}${RED}]${NC}             ${CYAN}[08]${NC} • ${RED}[${NC}${PURPLE} BACKUP MENU ${NC}${RED}]${NC} "
-echo -e "  ${CYAN}[02]${NC} • ${RED}[${NC}${PURPLE} VMESS MENU ${NC}${RED}]${NC}           ${CYAN}[09]${NC} • ${RED}[${NC}${PURPLE} SETTING MENU${NC}${RED}]${NC}  "
-echo -e "  ${CYAN}[03]${NC} • ${RED}[${NC}${PURPLE} VLESS MENU ${NC}${RED}]${NC}           ${CYAN}[10]${NC} • ${RED}[${NC}${PURPLE} INFORMATION ${NC}${RED}]${NC}     "
-echo -e "  ${CYAN}[04]${NC} • ${RED}[${NC}${PURPLE} TROJAN MENU ${NC}${RED}]${NC}          ${CYAN}[11]${NC} • ${RED}[${NC}${PURPLE} ADD HOST/DOMAIN ${NC}${RED}]${NC}    "
-echo -e "  ${CYAN}[05]${NC} • ${RED}[${NC}${PURPLE} SSWS MENU ${NC}${RED}]${NC}            ${CYAN}[12]${NC} • ${RED}[${NC}${PURPLE} CERT XRAY ${NC}${RED}]${NC}    "
-echo -e "  ${CYAN}[06]${NC} • ${RED}[${NC}${PURPLE} UPDATE MENU${NC}${RED}]${NC}           ${CYAN}[13]${NC} • ${RED}[${NC}${PURPLE} AUTO REBOOT ${NC}${RED}]${NC}     "
-echo -e "  ${CYAN}[07]${NC} • ${RED}[${NC}${PURPLE} INSTALL UDP ${NC}${RED}]${NC}          ${CYAN}[14]${NC} • ${RED}[${NC}${PURPLE} MENU BOT ${NC}${RED}]${NC} "
-echo -e "$COLOR1┌────────────────────────────────────────────────────────────┐${NC}"
-echo -e "              << SCRIPT MULTIPORT TUNNELING >>                    \E[0m" | lolcat
-echo -e "$COLOR1└────────────────────────────────────────────────────────────┘${NC}"
-echo -e ""
+echo -e "${GREEN}┌─────────────────────────────────────────────────────┐${NC}"
+echo -e "${CYAN}                .::: INFORMASI VPS :::.         ${NC}           "
+echo -e "${GREEN}└─────────────────────────────────────────────────────┘${NC}"
+echo -e "${CYAN}  • Sever Uptime${NC}      =${YELLOW} $( uptime -p  | cut -d " " -f 2-10000 )${NC} "
+echo -e "${CYAN}  • Current Time${NC}      =${YELLOW} $( date -d "0 days" +"%d-%m-%Y | %X" )${NC}"
+echo -e "${CYAN}  • Operating System${NC}  =${YELLOW} $( cat /etc/os-release | grep -w PRETTY_NAME | sed 's/PRETTY_NAME//g' | sed 's/=//g' | sed 's/"//g')( $(uname -m))${NC}"
+echo -e "${CYAN}  • Current Domain${NC}    =${YELLOW} $( cat /etc/xray/domain )${NC}"
+echo -e "${CYAN}  • Server IP${NC}         =${YELLOW} ${ipsaya} ${NC}"
+echo -e "${CYAN}  • ISP-VPS${NC}           =${YELLOW} ${ISP} ${NC}"
+echo -e "${CYAN}  • City${NC}              =${YELLOW} ${CITY} ${NC}"
+echo -e "${CYAN}  • Clients Name${NC}      =${LIGHT} $Name ${NC}"
+echo -e "${CYAN}  • Script Exfire${NC}     =${RED} $dayleft Days ${NC}"
+echo -e "${GREEN}┌─────────────────────────────────────────────────────┐${NC}"
+echo -e "${CYAN}                .::: PAPER TUNNEL :::.               ${NC}     "
+echo -e "${GREEN}└─────────────────────────────────────────────────────┘${NC}"
+echo -e "${GREEN}┌─────────────────────────────────────────────────────┐${NC}"
+echo -e "${CYAN}      SSH     VMESS     VLESS     TROJAN     SDSK ${NC}"
+echo -e "${YELLOW}       $ssh1        $vma         $vla          $tra         $ssa ${NC}"
+echo -e "${GREEN}└─────────────────────────────────────────────────────┘${NC}"
+echo -e "${GREEN}┌─────────────────────────────────────────────────────┐${NC}"
+echo -e "${CYAN}               .::: MENU TUNNELING :::.                   ${NC} "
+echo -e "${GREEN}└─────────────────────────────────────────────────────┘${NC}"
+echo -e "${CYAN}    ${YELLOW}1.${NC} ${CYAN}SSH OVPN MANAGER${NC}         ${YELLOW}6.${NC} ${CYAN}BACKUP/RESTORE ${NC}"
+echo -e "${CYAN}    ${YELLOW}2.${NC} ${CYAN}VMESS MANAGER${NC}            ${YELLOW}7.${NC} ${CYAN}SETTING  ${NC}"
+echo -e "${CYAN}    ${YELLOW}3.${NC} ${CYAN}VLESS MANAGER${NC}            ${YELLOW}8.${NC} ${CYAN}UPDATE SCRIPT   ${NC} "
+echo -e "${CYAN}    ${YELLOW}4.${NC} ${CYAN}TROJAN MANAGER${NC}           ${YELLOW}9.${NC} ${CYAN}ADD HOST/DOMAIN   ${NC} "
+echo -e "${CYAN}    ${YELLOW}5.${NC} ${CYAN}SHODOWSOK MANAGER${NC}       ${YELLOW}10.${NC} ${CYAN}INSTALL UDP  ${NC} "
+echo -e "${GREEN}┌─────────────────────────────────────────────────────┐${NC}"
+echo -e "${CYAN}                 .::: Version 2.0 :::.                    ${NC} "
+echo -e "${GREEN}└─────────────────────────────────────────────────────┘${NC}"
+echo ""
 echo -ne " Select menu : "; read opt
 case $opt in
 01 | 1) clear ; menu-ssh ;;
@@ -200,15 +195,11 @@ case $opt in
 03 | 3) clear ; menu-vless ;;
 04 | 4) clear ; menu-trojan ;;
 05 | 5) clear ; menu-ss ;;
-06 | 6) clear ; wget ${UPDATE} && chmod +x update.sh && ./update.sh ;;
-07 | 7) clear ; wget --load-cookies /tmp/cookies.txt ${UDPX} -O install-udp && rm -rf /tmp/cookies.txt && chmod +x install-udp && ./install-udp ;;
-08 | 8) clear ; menu-backup ;;
-09 | 9) clear ; menu-set ;;
-10) clear ; info ;;
-11) clear ; add-host ;;
-12) clear ; crtxray ;;
-13) clear ; auto-reboot ;;
-14) clear ; wget ${BOT}xolpanel.sh && chmod +x xolpanel.sh && ./xolpanel.sh ;;
+06 | 6) clear ; menu-backup ;;
+07 | 7) clear ; menu-set ;;
+08 | 8) clear ; wget ${UPDATE} && chmod +x update.sh && ./update.sh ;;
+09 | 9) clear ; add-host ;;
+10 | 10) clear ; wget --load-cookies /tmp/cookies.txt ${UDPX} -O install-udp && rm -rf /tmp/cookies.txt && chmod +x install-udp && ./install-udp ;;
 999) clear ; $up2u ;;
 00 | 0) clear ; menu ;;
 *) clear ; menu ;;
