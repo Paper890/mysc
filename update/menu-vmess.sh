@@ -254,7 +254,7 @@ curl -s --max-time $TIMES -d "chat_id=$CHATIDGC&disable_web_page_preview=1&text=
 clear
 clear
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e " ${COLBG1}  • CREATE VMESS USER •           ${NC} "
+echo -e " ${COLBG1}  • CREATE VMESS USER •     ${NC} "
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "$COLOR1 ${NC} Remarks       : ${user}"
 echo -e "$COLOR1 ${NC} Expired On    : $exp" 
@@ -355,7 +355,7 @@ curl -s --max-time $TIMES -d "chat_id=$CHATIDGC&disable_web_page_preview=1&text=
 clear
 clear
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e " ${COLBG1}   • CREATE VMESS USER •           ${NC} "
+echo -e " ${COLBG1}   • CREATE VMESS USER •    ${NC} "
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "$COLOR1 ${NC} Remarks       : ${user}"
 echo -e "$COLOR1 ${NC} Expired On    : $exp" 
