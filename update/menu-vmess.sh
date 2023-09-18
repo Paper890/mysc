@@ -250,25 +250,12 @@ vmesslink3="vmess://$(echo $grpc | base64 -w 0)"
 systemctl restart xray > /dev/null 2>&1
 service cron restart > /dev/null 2>&1
 END
-TRX="
-<code>INFO MASKU -Transaksi</code>
-<code>────────────────────</code>
-<b>  ⚠️TRANSAKSI VMESS WS⚠️      </b>
-<code>────────────────────</code>
-<code>🌟Owner   : $OWNER</code>
-<code>🌟Detail  : $AKUN</code>
-<code>🌟Durasi  : $exp</code>
-<code>🌟Server  : $domain</code>
-<code>────────────────────</code>
-<i>Notifikasi Via RstoreBOT</i>
-<b>Tele : @kytxz</b>
-"
 curl -s --max-time $TIMES -d "chat_id=$CHATIDGC&disable_web_page_preview=1&text=$TRX&parse_mode=html" $URL
 clear
 clear
-echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e " ${COLBG1}        • CREATE VMESS USER •           ${NC} "
-echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e " ${COLBG1}  • CREATE VMESS USER •           ${NC} "
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "$COLOR1 ${NC} Remarks       : ${user}"
 echo -e "$COLOR1 ${NC} Expired On    : $exp" 
 echo -e "$COLOR1 ${NC} Domain        : ${domain}" 
@@ -282,7 +269,7 @@ echo -e "$COLOR1 ${NC} Network       : ws"
 echo -e "$COLOR1 ${NC} Path          : /vmess" 
 echo -e "$COLOR1 ${NC} Path WSS      : wss://bug.com/vmess" 
 echo -e "$COLOR1 ${NC} ServiceName   : vmess-grpc" 
-echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" 
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" 
 echo -e "$COLOR1 ${NC} Link TLS : "
 echo -e "$COLOR1 ${NC} ${vmesslink1}" 
 echo -e "$COLOR1 ${NC} "
@@ -291,7 +278,108 @@ echo -e "$COLOR1 ${NC} ${vmesslink2}"
 echo -e "$COLOR1 ${NC} "
 echo -e "$COLOR1 ${NC} Link GRPC : "
 echo -e "$COLOR1 ${NC} ${vmesslink3}"
-echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" 
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" 
+echo ""
+###VTURBOTTRANSAKSINEXUPDATE
+read -n 1 -s -r -p "   Press any key to back on menu"
+menu-vmess
+}
+function trialvmess(){
+domain=$(cat /etc/xray/domain)
+tls="$(cat ~/log-install.txt | grep -w "Vmess TLS" | cut -d: -f2|sed 's/ //g')"
+none="$(cat ~/log-install.txt | grep -w "Vmess None TLS" | cut -d: -f2|sed 's/ //g')"
+user=trial`</dev/urandom tr -dc X-Z0-9 | head -c4`
+uuid=$(cat /proc/sys/kernel/random/uuid)
+masaaktif=1
+exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
+sed -i '/#vmess$/a\### '"$user $exp"'\
+},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
+exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
+sed -i '/#vmessgrpc$/a\### '"$user $exp"'\
+},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
+asu=`cat<<EOF
+      {
+      "v": "2",
+      "ps": "${user}",
+      "add": "${domain}",
+      "port": "443",
+      "id": "${uuid}",
+      "aid": "0",
+      "net": "ws",
+      "path": "/vmess",
+      "type": "none",
+      "host": "${domain}",
+      "tls": "tls"
+}
+EOF`
+ask=`cat<<EOF
+      {
+      "v": "2",
+      "ps": "${user}",
+      "add": "${domain}",
+      "port": "80",
+      "id": "${uuid}",
+      "aid": "0",
+      "net": "ws",
+      "path": "/vmess",
+      "type": "none",
+      "host": "${domain}",
+      "tls": "none"
+}
+EOF`
+grpc=`cat<<EOF
+      {
+      "v": "2",
+      "ps": "${user}",
+      "add": "${domain}",
+      "port": "443",
+      "id": "${uuid}",
+      "aid": "0",
+      "net": "grpc",
+      "path": "vmess-grpc",
+      "type": "none",
+      "host": "${domain}",
+      "tls": "tls"
+}
+EOF`
+vmess_base641=$( base64 -w 0 <<< $vmess_json1)
+vmess_base642=$( base64 -w 0 <<< $vmess_json2)
+vmess_base643=$( base64 -w 0 <<< $vmess_json3)
+vmesslink1="vmess://$(echo $asu | base64 -w 0)"
+vmesslink2="vmess://$(echo $ask | base64 -w 0)"
+vmesslink3="vmess://$(echo $grpc | base64 -w 0)"
+systemctl restart xray > /dev/null 2>&1
+service cron restart > /dev/null 2>&1
+END
+curl -s --max-time $TIMES -d "chat_id=$CHATIDGC&disable_web_page_preview=1&text=$TRX&parse_mode=html" $URL
+clear
+clear
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e " ${COLBG1}   • CREATE VMESS USER •           ${NC} "
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "$COLOR1 ${NC} Remarks       : ${user}"
+echo -e "$COLOR1 ${NC} Expired On    : $exp" 
+echo -e "$COLOR1 ${NC} Domain        : ${domain}" 
+echo -e "$COLOR1 ${NC} Port TLS      : ${tls}" 
+echo -e "$COLOR1 ${NC} Port none TLS : ${none}" 
+echo -e "$COLOR1 ${NC} Port  GRPC    : ${tls}" 
+echo -e "$COLOR1 ${NC} id            : ${uuid}" 
+echo -e "$COLOR1 ${NC} alterId       : 0" 
+echo -e "$COLOR1 ${NC} Security      : auto" 
+echo -e "$COLOR1 ${NC} Network       : ws" 
+echo -e "$COLOR1 ${NC} Path          : /vmess" 
+echo -e "$COLOR1 ${NC} Path WSS      : wss://bug.com/vmess" 
+echo -e "$COLOR1 ${NC} ServiceName   : vmess-grpc" 
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" 
+echo -e "$COLOR1 ${NC} Link TLS : "
+echo -e "$COLOR1 ${NC} ${vmesslink1}" 
+echo -e "$COLOR1 ${NC} "
+echo -e "$COLOR1 ${NC} Link none TLS : "
+echo -e "$COLOR1 ${NC} ${vmesslink2}" 
+echo -e "$COLOR1 ${NC} "
+echo -e "$COLOR1 ${NC} Link GRPC : "
+echo -e "$COLOR1 ${NC} ${vmesslink3}"
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" 
 echo ""
 ###VTURBOTTRANSAKSINEXUPDATE
 read -n 1 -s -r -p "   Press any key to back on menu"
@@ -302,10 +390,12 @@ clear
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e " \e[1;97;101m          MENU MANAGER VMES           \E[0m"
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\033[1;93m〔⎆〕 ${grenbo}1.${NC} \033[0;36mCreating a Vmess Account${NC}"
-echo -e "\033[1;93m〔⎆〕 ${grenbo}2.${NC} \033[0;36mRenew a Vmess Account${NC}"
-echo -e "\033[1;93m〔⎆〕 ${grenbo}3.${NC} \033[0;36mDelete Vmess Account${NC}"
-echo -e "\033[1;93m〔⎆〕 ${grenbo}4.${NC} \033[0;36mCheck Vmess Account${NC}"
+echo -e "\033[1;93m ${grenbo}1.${NC} \033[0;36mCreating a Vmess Account${NC}"
+echo -e "\033[1;93m ${grenbo}2.${NC} \033[0;36mRenew a Vmess Account${NC}"
+echo -e "\033[1;93m ${grenbo}3.${NC} \033[0;36mDelete Vmess Account${NC}"
+echo -e "\033[1;93m ${grenbo}4.${NC} \033[0;36mCheck Vmess Account${NC}"
+echo -e "\033[1;93m ${grenbo}5.${NC} \033[0;36mCreating trial vmess${NC}"
+echo -e "\033[1;93m ${grenbo}0.${NC} \033[0;36mMenu${NC}"
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" 
 echo -e ""
 read -p " Select menu :  "  opt
@@ -315,8 +405,7 @@ case $opt in
 02 | 2) clear ; renewvmess ;;
 03 | 3) clear ; delvmess ;;
 04 | 4) clear ; cekvmess ;;
+05 | 5) clear ; trialvmess ;;
 00 | 0) clear ; menu ;;
 *) clear ; menu-vmess ;;
 esac
-
-       
