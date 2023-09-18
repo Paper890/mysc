@@ -221,15 +221,64 @@ read -n 1 -s -r -p "   Press any key to back on menu"
 menu-vless
 }
 
+function trialvless(){
+domain=$(cat /etc/xray/domain)
+tls="$(cat ~/log-install.txt | grep -w "Vless TLS" | cut -d: -f2|sed 's/ //g')"
+none="$(cat ~/log-install.txt | grep -w "Vless None TLS" | cut -d: -f2|sed 's/ //g')"
+user=trial`</dev/urandom tr -dc X-Z0-9 | head -c4`
+uuid=$(cat /proc/sys/kernel/random/uuid)
+masaaktif=1
+exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
+sed -i '/#vless$/a\#& '"$user $exp"'\
+},{"id": "'""$uuid""'","email": "'""$user""'"' /etc/xray/config.json
+sed -i '/#vlessgrpc$/a\#& '"$user $exp"'\
+},{"id": "'""$uuid""'","email": "'""$user""'"' /etc/xray/config.json
+vlesslink1="vless://${uuid}@${domain}:$tls?path=/vlessws&security=tls&encryption=none&type=ws#${user}"
+vlesslink2="vless://${uuid}@${domain}:$none?path=/vlessws&encryption=none&type=ws#${user}"
+vlesslink3="vless://${uuid}@${domain}:$tls?mode=gun&security=tls&encryption=none&type=grpc&serviceName=vless-grpc&sni=bug.com#${user}"
+systemctl restart xray
+clear
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e " ${COLBG1}          • CREATE VLESS USER •         ${NC} "
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e " Remarks       : ${user}" 
+echo -e " Expired On    : $exp" 
+echo -e " Domain        : ${domain}" 
+echo -e " port TLS      : $tls" 
+echo -e " port none TLS : $none" 
+echo -e " id            : ${uuid}"
+echo -e " Encryption    : none" 
+echo -e " Network       : ws" 
+echo -e " Path          : /vless" 
+echo -e " Path WSS      : wss://bug.com/vless" 
+echo -e " Path          : vless-grpc" 
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e " Link TLS :"
+echo -e " ${vlesslink1}" 
+echo -e ""   
+echo -e " Link none TLS : "
+echo -e " ${vlesslink2}" 
+echo -e ""
+echo -e " Link GRPC : "
+echo -e " ${vlesslink3}" 
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo "" 
+read -n 1 -s -r -p "   Press any key to back on menu"
+menu-vless
+}
+
 
 clear
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e " \e[1;97;101m            MENU MANAGER VLESS          \E[0m"
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\033[1;93m〔⎆〕 ${grenbo}1.${NC} \033[0;36mCreating a Vless Account${NC}"
-echo -e "\033[1;93m〔⎆〕 ${grenbo}2.${NC} \033[0;36mRenew a Vless Account${NC}"
-echo -e "\033[1;93m〔⎆〕 ${grenbo}3.${NC} \033[0;36mDelete a Vless Account${NC}"
-echo -e "\033[1;93m〔⎆〕 ${grenbo}4.${NC} \033[0;36mCek Login Vless Account${NC}"
+echo -e "\033[1;93m ${grenbo}1.${NC} \033[0;36mCreating a Vless Account${NC}"
+echo -e "\033[1;93m ${grenbo}2.${NC} \033[0;36mRenew a Vless Account${NC}"
+echo -e "\033[1;93m ${grenbo}3.${NC} \033[0;36mDelete a Vless Account${NC}"
+echo -e "\033[1;93m ${grenbo}4.${NC} \033[0;36mCek Login Vless Account${NC}"
+echo -e "\033[1;93m ${grenbo}5.${NC} \033[0;36mTrial vless${NC}"
+echo -e "\033[1;93m ${grenbo}0.${NC} \033[0;36mMenu${NC}"
+
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e ""
 read -p " Select menu :  "  opt
@@ -239,8 +288,7 @@ case $opt in
 02 | 2) clear ; renewvless ;;
 03 | 3) clear ; delvless ;;
 04 | 4) clear ; cekvless ;;
+05 | 5) clear ; trialvless ;;
 00 | 0) clear ; menu ;;
 *) clear ; menu-vless ;;
 esac
-
-       
