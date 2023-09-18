@@ -82,21 +82,7 @@ echo ""
 read -n 1 -s -r -p "  Press any key to back on menu"
 menu-ssh
 fi
-#####BOT-TRX
-END
-<☘️🔥TRX="
-<code>INFO MASKU -Transaksi</code>
-<code>────────────────────</code>
-<b>  ⚠️TRANSAKSI SSH OVPN⚠️      </b>
-<code>────────────────────</code>
-<code>🌟Owner   : $OWNER</code>
-<code>🌟Detail  : $AKUN</code>
-<code>🌟Durasi  : $exp</code>
-<code>🌟Server  : $domen</code>
-<code>────────────────────</code>
-<i>Notifikasi Via BOT</i>
-<b>Tele : @sanmaxx/b>
-"
+
 curl -s --max-time $TIMES -d "chat_id=$CHATIDGC&disable_web_page_preview=1&text=$TRX&parse_mode=html" $URL
 clear
 ###########
@@ -583,5 +569,3 @@ case $opt in
 08 | 8) clear ; menu ;;
 *) clear ; menu-ssh ;;
 esac
-
-       
