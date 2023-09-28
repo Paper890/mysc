@@ -1,5 +1,8 @@
 #!/bin/bash
 # =========================================
+UPDATE="https://raw.githubusercontent.com/Paper890/mysc/main/update/update.sh"
+GREEN='\033[0;32m'
+RED='\033[0;31m'
 ipsaya=$(wget -qO- ipinfo.io/ip)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
