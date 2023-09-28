@@ -216,6 +216,7 @@ echo -e "\033[1;93m〔⎆〕 ${grenbo}5.${NC} \033[0;36mTcp TWEAK${NC}"
 echo -e "\033[1;93m〔⎆〕 ${grenbo}6.${NC} \033[0;36mRestart ALL${NC}"
 echo -e "\033[1;93m〔⎆〕 ${grenbo}7.${NC} \033[0;36mAuto REBOOT${NC}"
 echo -e "\033[1;93m〔⎆〕 ${grenbo}8.${NC} \033[0;36mSPEEDTEST ${NC}"
+echo -e "\033[1;93m〔⎆〕 ${grenbo}9.${NC} \033[0;36mReboot VPS ${NC}"
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e ""
 read -p "  Select menu :  "  opt
@@ -229,6 +230,7 @@ case $opt in
 06 | 6) clear ; restart ;;
 07 | 7) clear ; autoboot ;;
 08 | 8) clear ; mspeed ;;
+09 | 9) clear ; reboot ;;
 00 | 0) clear ; menu ;;
 *) clear ; menu-set ;;
 esac
