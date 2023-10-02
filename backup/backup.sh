@@ -35,8 +35,6 @@ cp /etc/group backup/
 cp /etc/shadow backup/
 cp /etc/gshadow backup/
 cp -r /etc/xray backup/xray
-cp -r /root/nsdomain backup/nsdomain
-cp -r /etc/slowdns backup/slowdns
 cp -r /home/vps/public_html backup/public_html
 cd /root
 zip -r $IP-$date.zip backup > /dev/null 2>&1
