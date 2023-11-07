@@ -68,6 +68,12 @@ export CYAN='\033[0;36m'
 export LIGHT='\033[0;37m'
 export NC='\033[0m'
 
+colornow=$(cat /etc/ssnvpn/theme/color.conf)
+NC="\e[0m"
+RED="\033[0;31m" 
+COLOR1="\033[1;36m"
+COLBG1="\e[1;97;101m"   
+
 #Status
 tram=$( free -h | awk 'NR==2 {print $2}' )
 uram=$( free -h | awk 'NR==2 {print $3}' )
@@ -175,7 +181,7 @@ fi
 clear
 clear
 echo -e "${GREEN}┌─────────────────────────────────────────────────────┐${NC}"
-echo -e "${CYAN}                .::: INFORMASI VPS :::.         ${NC}           "
+echo -e "  ${COLBG1}                - INFORMASI VPS -                  ${NC}   "
 echo -e "${GREEN}└─────────────────────────────────────────────────────┘${NC}"
 echo -e "${CYAN}  • Sever Uptime${NC}      =${YELLOW} $( uptime -p  | cut -d " " -f 2-10000 )${NC} "
 echo -e "${CYAN}  • Operating System${NC}  =${YELLOW} $( cat /etc/os-release | grep -w PRETTY_NAME | sed 's/PRETTY_NAME//g' | sed 's/=//g' | sed 's/"//g')( $(uname -m))${NC}"
