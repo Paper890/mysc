@@ -386,7 +386,7 @@ menu-vmess
 
 clear
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e " \e[1;97;101m          MENU MANAGER VMES           \E[0m"
+echo -e " \e[1;97;101m          MENU MANAGER VMES            \E[0m"
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "\033[1;93m ${grenbo}1.${NC} \033[0;36mCreating a Vmess Account${NC}"
 echo -e "\033[1;93m ${grenbo}2.${NC} \033[0;36mRenew a Vmess Account${NC}"
