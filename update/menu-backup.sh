@@ -23,8 +23,6 @@ echo -e " ${COLBG1}            • MENU BACKUP •             ${NC} "
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "\033[1;93m〔⎆〕 ${grenbo}1.${NC} \033[0;36mBackup VPS${NC}"
 echo -e "\033[1;93m〔⎆〕 ${grenbo}2.${NC} \033[0;36mRestore VPS${NC}"
-echo -e "\033[1;93m〔⎆〕 ${grenbo}3.${NC} \033[0;36mBackup API${NC}"
-echo -e "\033[1;93m〔⎆〕 ${grenbo}4.${NC} \033[0;36mReset API${NC}"
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e ""
 read -p " Select menu :  "  opt
