@@ -32,7 +32,7 @@ echo -e ""
 case $opt in
 01 | 1) clear ; backup ;;
 02 | 2) clear ; restore ;;
-03 | 3) clear ; wget -q https://raw.githubusercontent.com/Paper890/mysc/main/backup/auto.sh && chmod +x auto.sh && ./auto.sh
+03 | 3) clear ; wget -q https://raw.githubusercontent.com/Paper890/mysc/main/backup/auto.sh && chmod +x auto.sh && ./auto.sh ;;
 00 | 0) clear ; menu ;;
 *) clear ; menu-backup ;;
 esac
