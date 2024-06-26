@@ -165,3 +165,6 @@ systemctl enable auto
 systemctl start auto
 
 echo "Autobackup Berhasil Di install" 
+
+cd
+rm auto.sh
