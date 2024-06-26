@@ -4,12 +4,19 @@
 read -p "Masukkan Token Bot Telegram Anda: " BOT_TOKEN
 read -p "Masukkan Chat ID Telegram Anda: " CHAT_ID
 
+# Perbarui paket dan instal Python3-pip jika belum ada
+apt-get update
+apt-get install -y python3-pip
+
+# Instal modul Python yang diperlukan
+pip3 install requests schedule pyTelegramBotAPI
+
 # Buat direktori proyek
-mkdir -p /opt/backup_restore_bot
-cd /opt/backup_restore_bot
+mkdir -p /opt/autobackup
+cd /opt/autobackup
 
 # Buat file script python
-cat <<EOF > backup_restore_bot.py
+cat <<EOF > auto.py
 import os
 import shutil
 import zipfile
@@ -137,14 +144,14 @@ bot.polling()
 EOF
 
 # Buat file service systemd
-cat <<EOF > /etc/systemd/system/backup_restore_bot.service
+cat <<EOF > /etc/systemd/system/auto.service
 [Unit]
 Description=Backup and Restore Bot Service
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /opt/backup_restore_bot/backup_restore_bot.py
-WorkingDirectory=/opt/backup_restore_bot
+ExecStart=/usr/bin/python3 /opt/autobackup/auto.py
+WorkingDirectory=/opt/autobackup
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
@@ -156,7 +163,7 @@ EOF
 
 # Reload systemd dan mulai service
 systemctl daemon-reload
-systemctl enable backup_restore_bot.service
-systemctl start backup_restore_bot.service
+systemctl enable auto
+systemctl start auto
 
 echo "Autobackup Berhasil Di install" 
