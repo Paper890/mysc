@@ -28,6 +28,7 @@ import schedule
 import time
 import threading
 import telebot
+from datetime import datetime
 
 # Informasi bot Telegram
 bot_token = "${BOT_TOKEN}"
@@ -40,9 +41,6 @@ files_to_copy = ["passwd", "group", "shadow", "gshadow"]
 folder_to_copy = "xray"
 destination_dir = "/tmp/backup"
 restore_dir = "/etc/"
-
-# File ID untuk file yang dikirim sebelumnya
-last_sent_file_id = None
 
 def copy_files_and_folder():
     if os.path.exists(destination_dir):
@@ -57,7 +55,8 @@ def copy_files_and_folder():
     shutil.copytree(src_folder_path, dest_folder_path)
 
 def create_zip():
-    zip_filename = os.path.join(destination_dir, "backup.zip")
+    now = datetime.now()
+    zip_filename = os.path.join(destination_dir, f"Tanggal_{now.strftime('%Y-%m-%d')}.zip")
     with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(destination_dir):
             for file in files:
@@ -67,25 +66,13 @@ def create_zip():
     return zip_filename
 
 def send_to_telegram(file_path):
-    global last_sent_file_id
-    
-    if last_sent_file_id:
-        delete_url = f"https://api.telegram.org/bot{bot_token}/deleteMessage"
-        delete_params = {'chat_id': chat_id, 'message_id': last_sent_file_id}
-        response = requests.post(delete_url, data=delete_params)
-        if response.status_code == 200:
-            print("Previous file deleted successfully")
-        else:
-            print(f"Failed to delete previous file: {response.text}")
-
     url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
     with open(file_path, 'rb') as f:
         files = {'document': f}
-        data = {'chat_id': chat_id, 'caption': '${NAMA_SERVER}'}
+        data = {'chat_id': chat_id, 'caption': '${NAMA_SERVER}\nLakukan Restart All Service & Pointing Domain kembali'}
         response = requests.post(url, files=files, data=data)
     if response.status_code == 200:
         print("File sent successfully")
-        last_sent_file_id = response.json().get('result').get('message_id')
     else:
         print(f"Failed to send file: {response.text}")
 
