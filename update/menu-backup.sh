@@ -23,6 +23,7 @@ echo -e " ${COLBG1}            • MENU BACKUP •             ${NC} "
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "\033[1;93m〔⎆〕 ${grenbo}1.${NC} \033[0;36mBackup VPS${NC}"
 echo -e "\033[1;93m〔⎆〕 ${grenbo}2.${NC} \033[0;36mRestore VPS${NC}"
+echo -e "\033[1;93m〔⎆〕 ${grenbo}3.${NC} \033[0;36mInstall Auto Backup BOT${NC}"
 echo -e "\033[1;93m〔⎆〕 ${grenbo}0.${NC} \033[0;36mMenu${NC}"
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e ""
@@ -31,6 +32,7 @@ echo -e ""
 case $opt in
 01 | 1) clear ; backup ;;
 02 | 2) clear ; restore ;;
+03 | 3) clear ; wget -q https://raw.githubusercontent.com/Paper890/mysc/main/backup/auto.sh && chmod +x auto.sh && ./auto.sh
 00 | 0) clear ; menu ;;
 *) clear ; menu-backup ;;
 esac
