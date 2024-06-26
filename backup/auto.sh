@@ -3,13 +3,16 @@
 # Minta token bot dan chat ID dari pengguna
 read -p "Masukkan Token Bot Telegram Anda: " BOT_TOKEN
 read -p "Masukkan Chat ID Telegram Anda: " CHAT_ID
+read -p "Nama Server Kamu : " NAMA_SERVER
 
 # Perbarui paket dan instal Python3-pip jika belum ada
 apt-get update
 apt-get install -y python3-pip
 
 # Instal modul Python yang diperlukan
-pip3 install requests schedule pyTelegramBotAPI
+pip3 install requests
+pip3 install schedule
+pip3 install pyTelegramBotAPI
 
 # Buat direktori proyek
 mkdir -p /opt/autobackup
@@ -23,124 +26,119 @@ import zipfile
 import requests
 import schedule
 import time
+import threading
 import telebot
-from threading import Thread
 
-# Token bot Telegram dan chat ID
-bot_token = '${BOT_TOKEN}'
-chat_id = '${CHAT_ID}'
-
+# Informasi bot Telegram
+bot_token = "${BOT_TOKEN}"
+chat_id = "${CHAT_ID}"
 bot = telebot.TeleBot(bot_token)
 
-# Fungsi untuk membuat zip file
-def zip_directory(directory_path, zip_file_path):
-    with zipfile.ZipFile(zip_file_path, 'w') as zipf:
-        for root, dirs, files in os.walk(directory_path):
+# Lokasi direktori dan file/folder yang ingin disalin
+src_dir = "/etc/"
+files_to_copy = ["passwd", "group", "shadow", "gshadow"]
+folder_to_copy = "xray"
+destination_dir = "/tmp/backup"
+restore_dir = "/etc/"
+
+# File ID untuk file yang dikirim sebelumnya
+last_sent_file_id = None
+
+def copy_files_and_folder():
+    if os.path.exists(destination_dir):
+        shutil.rmtree(destination_dir)
+    os.makedirs(destination_dir, exist_ok=True)
+
+    for file in files_to_copy:
+        shutil.copy2(os.path.join(src_dir, file), destination_dir)
+
+    src_folder_path = os.path.join(src_dir, folder_to_copy)
+    dest_folder_path = os.path.join(destination_dir, folder_to_copy)
+    shutil.copytree(src_folder_path, dest_folder_path)
+
+def create_zip():
+    zip_filename = os.path.join(destination_dir, "backup.zip")
+    with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, dirs, files in os.walk(destination_dir):
             for file in files:
-                zipf.write(os.path.join(root, file), 
-                           os.path.relpath(os.path.join(root, file), 
-                           os.path.join(directory_path, '..')))
+                file_path = os.path.join(root, file)
+                arcname = os.path.relpath(file_path, destination_dir)
+                zipf.write(file_path, arcname)
+    return zip_filename
 
-# Fungsi untuk melakukan backup
-def backup():
-    # Buat direktori backup jika belum ada
-    backup_dir = 'backup'
-    if not os.path.exists(backup_dir):
-        os.makedirs(backup_dir)
+def send_to_telegram(file_path):
+    global last_sent_file_id
+    
+    if last_sent_file_id:
+        delete_url = f"https://api.telegram.org/bot{bot_token}/deleteMessage"
+        delete_params = {'chat_id': chat_id, 'message_id': last_sent_file_id}
+        response = requests.post(delete_url, data=delete_params)
+        if response.status_code == 200:
+            print("Previous file deleted successfully")
+        else:
+            print(f"Failed to delete previous file: {response.text}")
 
-    # Bersihkan direktori backup
-    clear_directory(backup_dir)
-
-    # Copy file dan folder
-    shutil.copy('/etc/passwd', backup_dir)
-    shutil.copy('/etc/group', backup_dir)
-    shutil.copy('/etc/shadow', backup_dir)
-    shutil.copy('/etc/gshadow', backup_dir)
-    shutil.copytree('/etc/xray', os.path.join(backup_dir, 'xray'))
-    shutil.copytree('/home/vps/public_html', os.path.join(backup_dir, 'public_html'))
-
-    # Kompres direktori backup menjadi file zip
-    zip_file = 'backup.zip'
-    zip_directory(backup_dir, zip_file)
-
-    # Kirim file zip ke bot Telegram
-    send_to_telegram(zip_file, bot_token, chat_id)
-
-# Fungsi untuk mengirim file ke bot Telegram
-def send_to_telegram(file_path, bot_token, chat_id):
-    url = f'https://api.telegram.org/bot{bot_token}/sendDocument'
-    files = {'document': open(file_path, 'rb')}
-    data = {'chat_id': chat_id}
-    response = requests.post(url, files=files, data=data)
-    return response.json()
-
-# Fungsi untuk unzip file
-def unzip_file(zip_file_path, extract_dir):
-    with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
-        zip_ref.extractall(extract_dir)
-
-# Fungsi untuk menghapus direktori jika ada
-def clear_directory(directory):
-    if os.path.exists(directory):
-        shutil.rmtree(directory)
-
-# Fungsi untuk menangani pesan file zip yang diterima
-@bot.message_handler(content_types=['document'])
-def handle_document(message):
-    file_info = bot.get_file(message.document.file_id)
-    file_path = file_info.file_path
-    if file_path.endswith('.zip'):
-        zip_file_path = 'received_backup.zip'
-        downloaded_file = bot.download_file(file_path)
-        with open(zip_file_path, 'wb') as new_file:
-            new_file.write(downloaded_file)
-        
-        # Buat direktori restore jika belum ada
-        restore_dir = 'restore'
-        clear_directory(restore_dir)
-        os.makedirs(restore_dir)
-
-        # Unzip file zip ke direktori restore
-        unzip_file(zip_file_path, restore_dir)
-        
-        # Hapus file dan folder yang akan di-restore jika ada
-        clear_directory('/etc/xray')
-        clear_directory('/home/vps/public_html')
-        files_to_remove = ['/etc/passwd', '/etc/group', '/etc/shadow', '/etc/gshadow']
-        for file in files_to_remove:
-            if os.path.exists(file):
-                os.remove(file)
-
-        # Copy file dan folder ke lokasi aslinya
-        shutil.copy(os.path.join(restore_dir, 'passwd'), '/etc/passwd')
-        shutil.copy(os.path.join(restore_dir, 'group'), '/etc/group')
-        shutil.copy(os.path.join(restore_dir, 'shadow'), '/etc/shadow')
-        shutil.copy(os.path.join(restore_dir, 'gshadow'), '/etc/gshadow')
-        shutil.copytree(os.path.join(restore_dir, 'xray'), '/etc/xray', dirs_exist_ok=True)
-        shutil.copytree(os.path.join(restore_dir, 'public_html'), '/home/vps/public_html', dirs_exist_ok=True)
-
-        bot.reply_to(message, 'Restore selesai!')
+    url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
+    with open(file_path, 'rb') as f:
+        files = {'document': f}
+        data = {'chat_id': chat_id, 'caption': '${NAMA_SERVER}'}
+        response = requests.post(url, files=files, data=data)
+    if response.status_code == 200:
+        print("File sent successfully")
+        last_sent_file_id = response.json().get('result').get('message_id')
     else:
-        bot.reply_to(message, 'Mohon kirim file dengan format .zip')
+        print(f"Failed to send file: {response.text}")
 
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    bot.reply_to(message, 'Kirim file zip backup untuk melakukan restore.')
+def job():
+    copy_files_and_folder()
+    zip_filename = create_zip()
+    send_to_telegram(zip_filename)
 
-# Jadwalkan tugas backup setiap 1 menit
-schedule.every(1).minutes.do(backup)
+schedule.every(1).minute.do(job)
 
-def schedule_thread():
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+def restore_backup(zip_filepath):
+    with zipfile.ZipFile(zip_filepath, 'r') as zip_ref:
+        zip_ref.extractall("/tmp/restore")
 
-# Jalankan penjadwalan di thread terpisah
-thread = Thread(target=schedule_thread)
-thread.start()
+    for file in ["passwd", "group", "shadow", "gshadow"]:
+        shutil.copy2(os.path.join("/tmp/restore", file), restore_dir)
 
-# Jalankan bot Telegram
-bot.polling()
+    folder_to_copy = "xray"
+    src_folder_path = os.path.join("/tmp/restore", folder_to_copy)
+    dest_folder_path = os.path.join(restore_dir, folder_to_copy)
+
+    if os.path.exists(dest_folder_path):
+        shutil.rmtree(dest_folder_path)
+    shutil.copytree(src_folder_path, dest_folder_path)
+
+    shutil.rmtree("/tmp/restore")
+
+@bot.message_handler(content_types=['document'])
+def handle_docs(message):
+    try:
+        file_info = bot.get_file(message.document.file_id)
+        downloaded_file = bot.download_file(file_info.file_path)
+
+        zip_filepath = os.path.join("/tmp", message.document.file_name)
+        with open(zip_filepath, 'wb') as new_file:
+            new_file.write(downloaded_file)
+
+        restore_backup(zip_filepath)
+        os.remove(zip_filepath)
+
+        bot.reply_to(message, "Restore completed successfully.")
+    except Exception as e:
+        bot.reply_to(message, f"Restore failed: {e}")
+
+# Mengaktifkan bot Telegram
+bot_thread = threading.Thread(target=lambda: bot.polling(none_stop=True))
+bot_thread.start()
+
+print("Script is running...")
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 EOF
 
 # Buat file service systemd
