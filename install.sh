@@ -77,6 +77,12 @@ if [[ "$hst" != "$dart" ]]; then
 echo "$localip $(hostname)" >> /etc/hosts
 fi
 mkdir -p /etc/xray
+echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+    echo -e "${red}    ♦️${NC} ${green} CUSTOM SETUP DOMAIN VPS     ${NC}"
+    echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+    read -rp "Enter Your Domain : " domen 
+
+clear
 
 echo -e "[ ${tyblue}NOTES${NC} ] Before we go.. "
 sleep 1
@@ -205,23 +211,7 @@ echo ""
 wget -q https://raw.githubusercontent.com/Paper890/mysc/main/dependencies.sh;chmod +x dependencies.sh;./dependencies.sh
 rm dependencies.sh
 clear
-
-    echo -e "${red}    ♦️${NC} ${green} CUSTOM SETUP DOMAIN VPS     ${NC}"
-    echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-    echo "1. Use Domain From Script / Gunakan Domain Dari Script"
-    echo "2. Choose Your Own Domain / Pilih Domain Sendiri"
-    echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-    read -rp "Choose Your Domain Installation : " dom 
-
-    if test $dom -eq 1; then
-    clear
-    apt install jq curl -y
-    wget -q -O /root/cf "${CDNF}/cf" >/dev/null 2>&1
-    chmod +x /root/cf
-    bash /root/cf | tee /root/install.log
-    print_success "DomainAll"
-    elif test $dom -eq 2; then
-    read -rp "Enter Your Domain : " domen 
+# SET DOMAIN
     echo $domen > /root/domain
     echo "$domen" > /root/domain
     echo "$domen" > /root/scdomain
