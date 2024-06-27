@@ -77,12 +77,6 @@ if [[ "$hst" != "$dart" ]]; then
 echo "$localip $(hostname)" >> /etc/hosts
 fi
 mkdir -p /etc/xray
-echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-    echo -e "${red}    ♦️${NC} ${green} CUSTOM SETUP DOMAIN VPS     ${NC}"
-    echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-    read -rp "Enter Your Domain : " domen 
-
-clear
 
 echo -e "[ ${tyblue}NOTES${NC} ] Before we go.. "
 sleep 1
@@ -212,6 +206,10 @@ wget -q https://raw.githubusercontent.com/Paper890/mysc/main/dependencies.sh;chm
 rm dependencies.sh
 clear
 # SET DOMAIN
+echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+    echo -e "${red}    ♦️${NC} ${green} CUSTOM SETUP DOMAIN VPS     ${NC}"
+    echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+    read -rp "Enter Your Domain : " domen 
     echo $domen > /root/domain
     echo "$domen" > /root/domain
     echo "$domen" > /root/scdomain
@@ -219,12 +217,6 @@ clear
     echo "$domen" > /etc/xray/scdomain
     echo "IP=$domen" > /var/lib/ssnvpn-pro/ipvps.conf
     cp /root/domain /etc/xray/domain
-    else 
-    echo "Not Found Argument"
-    exit 1
-    fi
-    echo -e "${GREEN}Done!${NC}"
-    sleep 2
     clear
 
 #THEME RED
