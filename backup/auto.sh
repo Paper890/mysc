@@ -3,7 +3,6 @@
 # Minta token bot dan chat ID dari pengguna
 read -p "Masukkan Token Bot Telegram Anda: " BOT_TOKEN
 read -p "Masukkan Chat ID Telegram Anda: " CHAT_ID
-read -p "Nama Server Kamu : " NAMA_SERVER
 
 # Perbarui paket dan instal Python3-pip jika belum ada
 apt-get update
@@ -69,7 +68,7 @@ def send_to_telegram(file_path):
     url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
     with open(file_path, 'rb') as f:
         files = {'document': f}
-        data = {'chat_id': chat_id, 'caption': '${NAMA_SERVER}\nLakukan Restart All Service & Pointing Domain kembali'}
+        data = {'chat_id': chat_id, 'caption': 'Backup Succes\nLakukan Restart All Service & Pointing Domain kembali setelah Melakukan Restore'}
         response = requests.post(url, files=files, data=data)
     if response.status_code == 200:
         print("File sent successfully")
