@@ -28,6 +28,7 @@ echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━�
 echo -e "\033[1;93m〔⎆〕 ${GREEN}1.${NC} \033[0;36mBackup VPS${NC}"
 echo -e "\033[1;93m〔⎆〕 ${GREEN}2.${NC} \033[0;36mRestore VPS${NC}"
 echo -e "\033[1;93m〔⎆〕 ${GREEN}3.${NC} \033[0;36mInstall Auto Backup BOT${NC}"
+echo -e "\033[1;93m〔⎆〕 ${GREEN}4.${NC} \033[0;36mRemove Auto Backup${NC}"
 echo -e "\033[1;93m〔⎆〕 ${GREEN}0.${NC} \033[0;36mMenu${NC}"
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e ""
@@ -37,6 +38,7 @@ case $opt in
   1) clear ; backup ;;
   2) clear ; restore ;;
   3) clear ; wget -q https://raw.githubusercontent.com/Paper890/mysc/main/backup/auto.sh && chmod +x auto.sh && ./auto.sh ;;
+  4) clear ; rm /opt/autobackup/auto.py ; rm /etc/systemd/system/auto.service ;;
   0) clear ; menu ;;
   *) clear ; menu-backup ;;
 esac
