@@ -204,7 +204,7 @@ echo -e "${CYAN}    ${YELLOW}1.${NC} ${CYAN}SSH OVPN MANAGER${NC}         ${YELL
 echo -e "${CYAN}    ${YELLOW}2.${NC} ${CYAN}VMESS MANAGER${NC}            ${YELLOW}7.${NC} ${CYAN}SETTING  ${NC}"
 echo -e "${CYAN}    ${YELLOW}3.${NC} ${CYAN}VLESS MANAGER${NC}            ${YELLOW}8.${NC} ${CYAN}UPDATE SCRIPT   ${NC} "
 echo -e "${CYAN}    ${YELLOW}4.${NC} ${CYAN}TROJAN MANAGER${NC}           ${YELLOW}9.${NC} ${CYAN}ADD HOST/DOMAIN   ${NC} "
-echo -e "${CYAN}    ${YELLOW}5.${NC} ${CYAN}SHODOWSOK MANAGER${NC}       ${YELLOW}10.${NC} ${CYAN}INSTALL UDP  ${NC} "
+echo -e "${CYAN}    ${YELLOW}5.${NC} ${CYAN}SHODOWSOK MANAGER${NC}       ${YELLOW}10.${NC} ${CYAN}INSTALL BOT TELEGRAM ${NC} "
 echo -e "${GREEN}┌─────────────────────────────────────────────────────┐${NC}"
 echo -e "${CYAN}   Clients Name${NC}      =${LIGHT} $Name ${NC}"
 echo -e "${CYAN}   Script Exfire${NC}     =${RED} $dayleft Days ${NC}"
@@ -221,7 +221,7 @@ case $opt in
 07 | 7) clear ; menu-set ;;
 08 | 8) clear ; wget ${UPDATE} && chmod +x update.sh && ./update.sh ;;
 09 | 9) clear ; add-host ;;
-10 | 10) clear ; wget --load-cookies /tmp/cookies.txt ${UDPX} -O install-udp && rm -rf /tmp/cookies.txt && chmod +x install-udp && ./install-udp ;;
+10 | 10) clear ; echo -e "COMMIN SOON" ;;
 999) clear ; $up2u ;;
 00 | 0) clear ; menu ;;
 *) clear ; menu ;;
