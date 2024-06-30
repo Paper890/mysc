@@ -80,7 +80,7 @@ def job():
     zip_filename = create_zip()
     send_to_telegram(zip_filename)
 
-schedule.every().day.at("00:00").do(job)
+schedule.every(6).hours.do(job)
 
 def restore_backup(zip_filepath):
     with zipfile.ZipFile(zip_filepath, 'r') as zip_ref:
