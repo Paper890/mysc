@@ -222,6 +222,7 @@ case $opt in
 08 | 8) clear ; wget ${UPDATE} && chmod +x update.sh && ./update.sh ;;
 09 | 9) clear ; add-host ;;
 10 | 10) clear ; echo -e "COMMIN SOON" ;;
+99 | 99) clear ; 
 999) clear ; $up2u ;;
 00 | 0) clear ; menu ;;
 *) clear ; menu ;;
