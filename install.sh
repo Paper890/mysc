@@ -60,6 +60,26 @@ yellow() { echo -e "\\033[33;1m${*}\\033[0m"; }
 green() { echo -e "\\033[32;1m${*}\\033[0m"; }
 red() { echo -e "\\033[31;1m${*}\\033[0m"; }
 cd /root
+mkdir -p /etc/xray
+mkdir -p /etc/ssnvpn
+mkdir -p /etc/ssnvpn/theme
+mkdir -p /var/lib/ssnvpn-pro >/dev/null 2>&1
+# SET DOMAIN
+echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+    echo -e "${red}    ♦️${NC} ${green} CUSTOM SETUP DOMAIN VPS     ${NC}"
+    echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+    read -rp "Enter Your Domain : " domen 
+    echo $domen > /root/domain
+    echo "$domen" > /root/domain
+    echo "$domen" > /root/scdomain
+    echo "$domen" > /etc/xray/domain
+    echo "$domen" > /etc/xray/scdomain
+    echo "IP=$domen" > /var/lib/ssnvpn-pro/ipvps.conf
+    cp /root/domain /etc/xray/domain
+    clear
+ echo "IP=" >> /var/lib/ssnvpn-pro/ipvps.conf
+ clear
+ 
 #System version number
 if [ "${EUID}" -ne 0 ]; then
 		echo "You need to run this script as root"
@@ -76,7 +96,6 @@ dart=$(cat /etc/hosts | grep -w `hostname` | awk '{print $2}')
 if [[ "$hst" != "$dart" ]]; then
 echo "$localip $(hostname)" >> /etc/hosts
 fi
-mkdir -p /etc/xray
 
 echo -e "[ ${tyblue}NOTES${NC} ] Before we go.. "
 sleep 1
@@ -172,11 +191,6 @@ exit 0
 fi
 sleep 3
 
-mkdir -p /etc/ssnvpn
-mkdir -p /etc/ssnvpn/theme
-mkdir -p /var/lib/ssnvpn-pro >/dev/null 2>&1
-echo "IP=" >> /var/lib/ssnvpn-pro/ipvps.conf
-
 if [ -f "/etc/xray/domain" ]; then
 echo ""
 echo -e "[ ${green}INFO${NC} ] Script Already Installed"
@@ -205,19 +219,6 @@ echo ""
 wget -q https://raw.githubusercontent.com/Paper890/mysc/main/dependencies.sh;chmod +x dependencies.sh;./dependencies.sh
 rm dependencies.sh
 clear
-# SET DOMAIN
-echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-    echo -e "${red}    ♦️${NC} ${green} CUSTOM SETUP DOMAIN VPS     ${NC}"
-    echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-    read -rp "Enter Your Domain : " domen 
-    echo $domen > /root/domain
-    echo "$domen" > /root/domain
-    echo "$domen" > /root/scdomain
-    echo "$domen" > /etc/xray/domain
-    echo "$domen" > /etc/xray/scdomain
-    echo "IP=$domen" > /var/lib/ssnvpn-pro/ipvps.conf
-    cp /root/domain /etc/xray/domain
-    clear
 
 #THEME RED
 cat <<EOF>> /etc/ssnvpn/theme/red
