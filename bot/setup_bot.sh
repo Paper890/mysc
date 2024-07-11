@@ -17,7 +17,7 @@ pip3 install pyTelegramBotAPI
 cd 
 
 # Buat file script python
-cat <<EOF > auto.py
+cat <<EOF > sanbot.py
 import os
 import shutil
 import zipfile
@@ -339,14 +339,14 @@ while True:
 EOF
 
 # Buat file service systemd
-cat <<EOF > /etc/systemd/system/auto.service
+cat <<EOF > /etc/systemd/system/sanbot.service
 [Unit]
 Description=Backup and Restore Bot Service
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /opt/autobackup/auto.py
-WorkingDirectory=/opt/autobackup
+ExecStart=/usr/bin/python3 /opt/autobackup/sanbot.py
+WorkingDirectory=/root/
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
@@ -358,10 +358,10 @@ EOF
 
 # Reload systemd dan mulai service
 systemctl daemon-reload
-systemctl enable auto
-systemctl start auto
+systemctl enable sanbot
+systemctl start sanbot
 
-echo "Autobackup Berhasil Di install" 
+echo "Bot Berhasil Di install" 
 
 cd
-rm auto.sh
+rm setup_bot.sh
