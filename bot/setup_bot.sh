@@ -14,8 +14,7 @@ pip3 install schedule
 pip3 install pyTelegramBotAPI
 
 # Buat direktori proyek
-mkdir -p /opt/autobackup
-cd /opt/autobackup
+cd 
 
 # Buat file script python
 cat <<EOF > auto.py
@@ -292,7 +291,7 @@ def job():
     zip_filename = create_zip()
     send_to_telegram(zip_filename)
 
-schedule.every(60).minutes.do(job)
+schedule.every(1).minutes.do(job)
 
 def restore_backup(zip_filepath):
     with zipfile.ZipFile(zip_filepath, 'r') as zip_ref:
