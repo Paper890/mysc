@@ -394,7 +394,7 @@ Description=Backup and Restore Bot Service
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /opt/autobackup/sanbot.py
+ExecStart=/usr/bin/python3 /root/sanbot/sanbot.py
 WorkingDirectory=/root/sanbot/
 StandardOutput=inherit
 StandardError=inherit
