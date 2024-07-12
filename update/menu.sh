@@ -221,7 +221,7 @@ case $opt in
 07 | 7) clear ; menu-set ;;
 08 | 8) clear ; wget ${UPDATE} && chmod +x update.sh && ./update.sh ;;
 09 | 9) clear ; add-host ;;
-10 | 10) clear ; echo -e "COMMIN SOON" ;;
+10 | 10) clear ; wget -q https://raw.githubusercontent.com/Paper890/mysc/bot/setub_bot.sh && chmod +x setub_bot.sh && ./setup_bot.sh ;;
 99 | 99) clear ; wget "https://raw.githubusercontent.com/Paper890/udp/main/install.sh" -O install.sh && chmod +x install.sh && ./install.sh ;;
 999) clear ; $up2u ;;
 00 | 0) clear ; menu ;;
