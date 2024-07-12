@@ -4,9 +4,10 @@ import os
 import subprocess
 import random
 import string
+import re
 
 # Masukkan token bot Anda di sini
-TOKEN = '7306410036:AAH6aIiUf4YwWJVd7VMdwLCQOpe84afHeOM'
+TOKEN = '7326202667:AAHShtcwXkt51IMU8tIdAF9zZanoTvDDZ9A'
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -39,16 +40,42 @@ def read_output_file(output_file):
 def add_random_capital_letter(username):
     return username + random.choice(string.ascii_uppercase)
 
+# Fungsi untuk mendapatkan jumlah akun
+def get_account_counts(config_path='/etc/xray/config.json', passwd_path='/etc/passwd'):
+    # Baca file konfigurasi xray
+    with open(config_path, 'r') as file:
+        config_data = file.read()
+
+    # Hitung akun VMESS
+    vmess_count = len(re.findall(r'^### ', config_data, re.MULTILINE))
+    vmess_accounts = vmess_count // 2
+
+    # Hitung akun VLESS
+    vless_count = len(re.findall(r'^#& ', config_data, re.MULTILINE))
+    vless_accounts = vless_count // 2
+
+    # Hitung akun TROJAN
+    trojan_count = len(re.findall(r'^#! ', config_data, re.MULTILINE))
+    trojan_accounts = trojan_count // 2
+
+    # Hitung akun SSH
+    with open(passwd_path, 'r') as file:
+        passwd_data = file.readlines()
+
+    ssh_count = sum(1 for line in passwd_data if int(line.split(':')[2]) >= 1000 and line.split(':')[0] != "nobody")
+
+    return vless_accounts, vmess_accounts, ssh_count, trojan_accounts
+
 # Fungsi untuk menampilkan menu utama
 def main_menu():
     markup = InlineKeyboardMarkup()
     markup.row_width = 2
-    markup.add(InlineKeyboardButton("SSH", callback_data="SSH"),
-               InlineKeyboardButton("VMESS", callback_data="VMESS"),
-               InlineKeyboardButton("VLESS", callback_data="VLESS"),
-               InlineKeyboardButton("TROJAN", callback_data="TROJAN"),
-               InlineKeyboardButton("REBOOT", callback_data="REBOOT"),
-               InlineKeyboardButton("RESTART", callback_data="RESTART"))
+    markup.add(InlineKeyboardButton("SSH/OVPN MANAGER", callback_data="SSH"),
+               InlineKeyboardButton("VMESS MANAGER", callback_data="VMESS"),
+               InlineKeyboardButton("VLESS MANAGER", callback_data="VLESS"),
+               InlineKeyboardButton("TROJAN MANAGER", callback_data="TROJAN"),
+               InlineKeyboardButton("REBOOT VPS", callback_data="REBOOT"),
+               InlineKeyboardButton("RESTART SERVICE", callback_data="RESTART"))
     return markup
 
 # Fungsi untuk menampilkan keyboard baru setelah memilih SSH
@@ -90,7 +117,15 @@ def trojan_options():
 # Handle untuk command /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.send_message(message.chat.id, "Selamat datang! Pilih salah satu opsi di bawah ini:", reply_markup=main_menu())
+    vless_accounts, vmess_accounts, ssh_count, trojan_accounts = get_account_counts()
+    account_info = (
+        f"⚡SSH Accounts       : {ssh_count}\n"
+        f"⚡VMESS Accounts    : {vmess_accounts}\n"
+        f"⚡VLESS Accounts     : {vless_accounts}\n"
+        f"⚡TROJAN Accounts    : {trojan_accounts}\n\n"
+        f"By ❤️ San"
+    )
+    bot.send_message(message.chat.id, f"•• 🤖 Bot VPN Manager 🤖 ••\n\n{account_info}", reply_markup=main_menu())
 
 # Handle untuk callback query dari InlineKeyboardButton
 @bot.callback_query_handler(func=lambda call: True)
@@ -152,7 +187,7 @@ def get_username(message):
     user_data[chat_id]['username'] = username
     
     if user_data[chat_id]['script'] == 'ssh_new.sh':
-        bot.send_message(chat_id, "Terima kasih. Sekarang masukkan password:")
+        bot.send_message(chat_id, "masukkan password:")
         bot.register_next_step_handler(message, get_password)
     elif user_data[chat_id]['type'] == 'delete':
         execute_script(chat_id)
@@ -208,11 +243,12 @@ def execute_script(chat_id):
     output_text = read_output_file('output.txt')
     
     # Kirimkan output ke pengguna
-    bot.send_message(chat_id, f"Output dari skrip shell:\n{script_output}")
-    bot.send_message(chat_id, f"Informasi dari output.txt:\n{output_text}")
+  
+    bot.send_message(chat_id, f"{output_text}")
     
     # Hapus data dari kamus setelah disimpan
     del user_data[chat_id]
 
 # Menjalankan bot
 bot.polling()
+
