@@ -375,7 +375,9 @@ while True:
 EOF
 
 ###### Install Module ####
-
+wget https://raw.githubusercontent.com/Paper890/mysc/main/bot/ssh_renew.sh && chmod +x ssh_renew.sh
+wget https://raw.githubusercontent.com/Paper890/mysc/main/bot/ssh_new.sh && chmod +x ssh_new.sh
+wget https://raw.githubusercontent.com/Paper890/mysc/main/bot/ssh_delete.sh && chmod +x ssh_delete.sh
 wget https://raw.githubusercontent.com/Paper890/mysc/main/bot/vmess_renew.sh && chmod +x vmess_renew.sh
 wget https://raw.githubusercontent.com/Paper890/mysc/main/bot/vmess_new.sh && chmod +x vmess_new.sh
 wget https://raw.githubusercontent.com/Paper890/mysc/main/bot/vmess_delete.sh && chmod +x vmess_delete.sh
