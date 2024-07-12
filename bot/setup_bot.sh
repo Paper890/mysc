@@ -17,8 +17,6 @@ pip3 install pyTelegramBotAPI
 
 # Buat direktori proyek
 cd
-mkdir -p sanbot
-cd sanbot
 
 # Buat file script python
 cat <<EOF > sanbot.py
@@ -395,8 +393,8 @@ Description=Backup and Restore Bot Service
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /root/sanbot/sanbot.py
-WorkingDirectory=/root/sanbot/
+ExecStart=/usr/bin/python3 /root/sanbot.py
+WorkingDirectory=/root/
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
