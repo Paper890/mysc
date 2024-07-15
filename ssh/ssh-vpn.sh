@@ -246,6 +246,16 @@ fi
 sudo sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 sudo systemctl restart stunnel4
 
+echo "=== Install Squid ==="
+# Install Squid
+sudo apt -y install squid
+
+# Aktifkan dan mulai layanan Squid
+sudo systemctl enable squid
+sudo systemctl start squid
+
+echo "=== Instalasi dan Konfigurasi Selesai ==="
+
 # install fail2ban
 apt -y install fail2ban
 
