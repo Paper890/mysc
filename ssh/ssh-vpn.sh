@@ -178,35 +178,19 @@ sed -i 's/#Port 22/Port 22/g' /etc/ssh/sshd_config
 
 echo "=== Install Dropbear ==="
 # install dropbear
-sudo apt update
-sudo apt -y install dropbear
+#apt -y install dropbear
+sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=143/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 50000 -p 109 -p 110 -p 69"/g' /etc/default/dropbear
+echo "/bin/false" >> /etc/shells
+echo "/usr/sbin/nologin" >> /etc/shells
+/etc/init.d/ssh restart
+/etc/init.d/dropbear restart
 
-# Buat file konfigurasi jika tidak ada
-if [ ! -f /etc/default/dropbear ]; then
-    sudo touch /etc/default/dropbear
-    echo "NO_START=1" | sudo tee -a /etc/default/dropbear
-    echo "DROPBEAR_PORT=22" | sudo tee -a /etc/default/dropbear
-    echo "DROPBEAR_EXTRA_ARGS=" | sudo tee -a /etc/default/dropbear
-fi
-
-sudo sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sudo sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=143/g' /etc/default/dropbear
-sudo sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 50000 -p 109 -p 110 -p 69"/g' /etc/default/dropbear
-echo "/bin/false" | sudo tee -a /etc/shells
-echo "/usr/sbin/nologin" | sudo tee -a /etc/shells
-sudo systemctl restart ssh
-sudo systemctl restart dropbear
-
-echo "=== Install Stunnel ==="
+cd
 # install stunnel
-sudo apt install stunnel4 -y
-
-# Buat file konfigurasi jika tidak ada
-if [ ! -d /etc/stunnel ]; then
-    sudo mkdir /etc/stunnel
-fi
-
-sudo tee /etc/stunnel/stunnel.conf <<-EOF
+#apt install stunnel4 -y
+cat > /etc/stunnel/stunnel.conf <<-END
 cert = /etc/stunnel/stunnel.pem
 client = no
 socket = a:SO_REUSEADDR=1
@@ -229,32 +213,18 @@ connect = 700
 accept = 442
 connect = 127.0.0.1:1194
 
-EOF
+END
 
 # make a certificate
 openssl genrsa -out key.pem 2048
 openssl req -new -x509 -key key.pem -out cert.pem -days 1095 \
 -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
-cat key.pem cert.pem | sudo tee /etc/stunnel/stunnel.pem > /dev/null
+cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
 
 # konfigurasi stunnel
-if [ ! -f /etc/default/stunnel4 ]; then
-    sudo touch /etc/default/stunnel4
-    echo "ENABLED=0" | sudo tee -a /etc/default/stunnel4
-fi
+sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
+/etc/init.d/stunnel4 restart
 
-sudo sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-sudo systemctl restart stunnel4
-
-echo "=== Install Squid ==="
-# Install Squid
-sudo apt -y install squid
-
-# Aktifkan dan mulai layanan Squid
-sudo systemctl enable squid
-sudo systemctl start squid
-
-echo "=== Instalasi dan Konfigurasi Selesai ==="
 
 # install fail2ban
 apt -y install fail2ban
