@@ -150,6 +150,87 @@ if [[ $xray == "running" ]]; then
 else
     status_xray="${RED}OFF${NC}"
 fi
+#STATUSSERVICE
+cek=$(service ssh status | grep active | cut -d ' ' -f5)
+if [ "$cek" = "active" ]; then
+stat=-f5
+else
+stat=-f7
+fi
+cekray=`cat /root/log-install.txt | grep -ow "XRAY" | sort | uniq`
+if [ "$cekray" = "XRAY" ]; then
+rekk='xray'
+becek='XRAY'
+else
+rekk='v2ray'
+becek='V2RAY'
+fi
+
+ssh=$(service ssh status | grep active | cut -d ' ' $stat)
+if [ "$ssh" = "active" ]; then
+ressh="${green}ONLINE${NC}"
+else
+ressh="${red}OFFLINE${NC}"
+fi
+sshstunel=$(service stunnel4 status | grep active | cut -d ' ' $stat)
+if [ "$sshstunel" = "active" ]; then
+resst="${green}ONLINE${NC}"
+else
+resst="${red}OFFLINE${NC}"
+fi
+sshws=$(service ws-dropbear status | grep active | cut -d ' ' $stat)
+if [ "$sshws" = "active" ]; then
+rews="${green}ONLINE${NC}"
+else
+rews="${red}OFFLINE${NC}"
+fi
+
+sshws2=$(service ws-stunnel status | grep active | cut -d ' ' $stat)
+if [ "$sshws2" = "active" ]; then
+rews2="${green}ONLINE${NC}"
+else
+rews2="${red}OFFLINE${NC}"
+fi
+
+db=$(service dropbear status | grep active | cut -d ' ' $stat)
+if [ "$db" = "active" ]; then
+resdb="${green}ONLINE${NC}"
+else
+resdb="${red}OFFLINE${NC}"
+fi
+ 
+v2r=$(service $rekk status | grep active | cut -d ' ' $stat)
+if [ "$v2r" = "active" ]; then
+resv2r="${green}ONLINE${NC}"
+else
+resv2r="${red}OFFLINE${NC}"
+fi
+vles=$(service $rekk status | grep active | cut -d ' ' $stat)
+if [ "$vles" = "active" ]; then
+resvles="${green}ONLINE${NC}"
+else
+resvles="${red}OFFLINE${NC}"
+fi
+trj=$(service $rekk status | grep active | cut -d ' ' $stat)
+if [ "$trj" = "active" ]; then
+restr="${green}ONLINE${NC}"
+else
+restr="${red}OFFLINE${NC}"
+fi
+
+ningx=$(service nginx status | grep active | cut -d ' ' $stat)
+if [ "$ningx" = "active" ]; then
+resnx="${green}ONLINE${NC}"
+else
+resnx="${red}OFFLINE${NC}"
+fi
+
+squid=$(service squid status | grep active | cut -d ' ' $stat)
+if [ "$squid" = "active" ]; then
+ressq="${green}ONLINE${NC}"
+else
+ressq="${red}OFFLINE${NC}"
+fi
 
 clear
 clear
@@ -194,7 +275,17 @@ echo -e "${CYAN}  • Resource${NC}          =${YELLOW} $uram / $tram ${NC}"
 echo -e "${CYAN}  • CPU USAGE${NC}         =${YELLOW} $cpu_usage ${NC}"
 echo -e "${CYAN}  • Owner SC${NC}          =${YELLOW} Sanmaxx ${NC}"
 echo -e "${GREEN}┌─────────────────────────────────────────────────────┐${NC}"
-echo -e "${GREEN}    [ SSH Ws: ${GREEN}ON${NC} ]    [ NGINX: ${status_nginx} ]   [ XRAY : ${status_xray} ] "
+echo -e "${CYAN}   • SSH & VPN                • $ressh ${NC}"
+echo -e "${CYAN}   • SQUID                    • $ressq ${NC}"
+echo -e "${CYAN}   • DROPBEAR                 • $resdb ${NC}"
+echo -e "${CYAN}   • NGINX                    • $resnx ${NC}"
+echo -e "${CYAN}   • WS DROPBEAR              • $rews ${NC}"
+echo -e "${CYAN}   • WS STUNNEL               • $rews2 ${NC}"
+echo -e "${CYAN}   • STUNNEL                  • $resst ${NC}"
+echo -e "${CYAN}   • XRAY-SS                  • $resv2r ${NC}"
+echo -e "${CYAN}   • XRAY                     • $resv2r ${NC}"
+echo -e "${CYAN}   • VLESS                    • $resvles ${NC}"
+echo -e "${CYAN}   • TROJAN                   • $restr ${NC}"
 echo -e "${GREEN}└─────────────────────────────────────────────────────┘${NC}"
 echo -e "${GREEN}┌─────────────────────────────────────────────────────┐${NC}"
 echo -e "${CYAN}      SSH     VMESS     VLESS     TROJAN     SDSK ${NC}"
