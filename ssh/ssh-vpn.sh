@@ -153,7 +153,7 @@ echo "/usr/sbin/nologin" >> /etc/shells
 
 cd
 # install stunnel
-#apt install stunnel4 -y
+apt install stunnel4 -y
 cat > /etc/stunnel/stunnel.conf <<-END
 cert = /etc/stunnel/stunnel.pem
 client = no
